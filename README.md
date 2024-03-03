@@ -6,4 +6,12 @@
 배드민턴 참가자 리스트 프로그램과 연동되어 있습니다. 
 
 
+<img width="1772" alt="스크린샷 2024-03-03 오후 10 30 52" src="https://github.com/ply2782/BadmintonWaitList_Server/assets/78065931/8033de6b-8a74-4899-9313-e84004a46e50">
+<img width="1762" alt="스크린샷 2024-03-03 오후 10 31 04" src="https://github.com/ply2782/BadmintonWaitList_Server/assets/78065931/0eb69fbd-c516-44c7-a9c6-eed4a850ea27">
+<img width="1751" alt="스크린샷 2024-03-03 오후 10 31 15" src="https://github.com/ply2782/BadmintonWaitList_Server/assets/78065931/9ab6fd02-04c6-4b37-88eb-cc18683bcde6">
+<img width="1750" alt="스크린샷 2024-03-03 오후 10 31 29" src="https://github.com/ply2782/BadmintonWaitList_Server/assets/78065931/738e45d8-ea47-42bc-a306-f7ee152ffb88">
+<img width="1740" alt="스크린샷 2024-03-03 오후 10 34 06" src="https://github.com/ply2782/BadmintonWaitList_Server/assets/78065931/308cc23b-70c5-49c5-a319-d7d68dd1ce61">
+<img width="1714" alt="스크린샷 2024-03-03 오후 10 34 19" src="https://github.com/ply2782/BadmintonWaitList_Server/assets/78065931/39083f14-bfc5-432b-83b6-3e6c50aace8a">
+
+
       
