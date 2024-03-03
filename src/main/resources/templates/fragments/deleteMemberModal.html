@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <div th:fragment="deleteMemberModal">
+    <head>
+      <link th:href="@{/css/main/deleteMemberModal.css}" rel="stylesheet" />
+    </head>
+    <div class="deleteMemberModalPopup" id="popup">
+      <div class="deleteMemberModalPopup__content">
+        <h2 class="heading-secondary">회원 삭제</h2>
+        <h3 class="heading-tertiary">정말 해당 회원을 삭제하시겠습니까?</h3>
+        <div
+          style="display: flex; flex-direction: row; justify-content: flex-end"
+        >
+          <button
+            id="deleteMemberOkBtn"
+            onclick="deletePerson(this)"
+            class="deleteMemberModalButton"
+          >
+            확인
+          </button>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <button
+            onclick="closeDeleteMemberModal()"
+            class="deleteMemberModalButton"
+          >
+            취소
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</html>

@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <div th:fragment="attendanceModal">
+    <head>
+      <link th:href="@{/css/main/attendance_Modal.css}" rel="stylesheet" />
+      <link th:href="@{/css/main/chooseGenderBtn.css}" rel="stylesheet" />
+      <link th:href="@{/css/main/attendanceChkBtn.css}" rel="stylesheet" />
+      <link th:href="@{/css/main/areasBtn.css}" rel="stylesheet" />
+    </head>
+    <div id="attendance_modal" class="modal-overlay">
+      <div class="modal-window">
+        <div class="title">
+          <h2>출석 체크</h2>
+
+          <button
+            onclick="closeModal(this)"
+            class="close-area"
+            id="closeAttendanceModal"
+          >
+            X
+          </button>
+        </div>
+        <div class="content">
+          <!-- 대기자 이름 리스트 -->
+          <div
+            id="attendance_addWaitListWholeContainer"
+            class="attendance_addWaitListWholeContainer horizontal-friends-list"
+          >
+            <div class="chooseGenderBtnContainer">
+              <button
+                name="fullListBtn"
+                onclick="fullListFunc()"
+                class="btn-class-name"
+              >
+                <span class="back"></span>
+                <span class="front">전체</span>
+              </button>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <button
+                name="manListBtn"
+                onclick="manListFunc()"
+                class="btn-class-name"
+              >
+                <span class="back"></span>
+                <span class="front">남자</span>
+              </button>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <button
+                name="womanListBtn"
+                onclick="womanListFunc()"
+                class="btn-class-name"
+              >
+                <span class="back"></span>
+                <span class="front">여자</span>
+              </button>
+              <div class="searchBar">
+                <th:block th:include="fragments/search :: searchBar" />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <!-- <th:block
+                  th:include="fragments/voiceSearchBtn :: voiceSearchBtn"
+                /> -->
+              </div>
+            </div>
+            <div
+              id="clubNameList"
+              style="
+                display: flex;
+                overflow: scroll;
+                margin-top: 20px;
+                gap: 1rem;
+              "
+            ></div>
+            <table id="personListTable" class="personList"></table>
+          </div>
+          <!-- 대기자 이름 리스트 -->
+          <!-- 회원 삭제모달 -->
+          <th:block
+            th:include="fragments/deleteMemberModal :: deleteMemberModal"
+          />
+          <!-- 회원 삭제모달 -->
+        </div>
+      </div>
+    </div>
+    <script
+      type="text/javascript"
+      th:src="@{/js/main/createAttendanceList.js}"
+    ></script>
+    <script th:inline="javascript">
+      /*<![CDATA[*/
+      let allData = /*[[${datas}]]*/ [];
+      let clickFunc = "full";
+      let selectedAreasInit = "양오클럽";
+      const table = document.getElementById("personListTable");
+      const manListFunc = () => {
+        $.ajax({
+          url: "/getAllPersons",
+          type: "POST",
+          contentType: "application/json;charset=UTF-8",
+          dataType: "json",
+          success: (data) => {
+            clickFunc = "man";
+            allData = data;
+            const datas = data.sort((a, b) => a.name.localeCompare(b.name));
+            while (table.rows.length > 0) {
+              table.deleteRow(0);
+            }
+            let row;
+            const manData = [];
+            for (const data of datas) {
+              if (data.gender === "M" && data.clubName === selectedAreasInit) {
+                manData.push(data);
+              }
+            }
+            for (let i = 0; i < manData.length; i++) {
+              if (i % 4 == 0) {
+                row = table.insertRow();
+                row.classList.add("tr"); // 클래스 추가
+              }
+              const cell1 = row.insertCell(i % 4);
+              cell1.innerHTML = `<figcaption>${manData[i].name}</figcaption>
+        <div class="button-wrapper" style="margin-top: 10px">
+          <button
+            type="button"
+            role="button"
+            onclick="attendanceChkBtn(this)"
+            class=${
+              manData[i].currentStatus === "IN"
+                ? "'ripple-button dark-mode'"
+                : "ripple-button"
+            }
+            data-name="${manData[i].name}"
+            value="${manData[i].identity}">
+            ${manData[i].currentStatus === "OUT" ? "출석체크" : "체크해제"}
+          </button>
+          <button
+            style="margin-top:10px;"
+            type="button"
+            role="button"
+            onclick="delPerson(this)"
+            class=ripple-button
+            data-name="${manData[i].name}"
+            value="${manData[i].identity}">
+            회원삭제
+          </button>
+        </div>`;
+              cell1.classList.add("td"); // 클래스 추가
+            }
+            createClubNameListBtn(data);
+          },
+          fail: (e) => {
+            console.log("data is fail");
+          },
+        });
+      };
+
+      const womanListFunc = () => {
+        $.ajax({
+          url: "/getAllPersons",
+          type: "POST",
+          contentType: "application/json;charset=UTF-8",
+          dataType: "json",
+          success: (data) => {
+            clickFunc = "woman";
+            allData = data;
+            const datas = data.sort((a, b) => a.name.localeCompare(b.name));
+            while (table.rows.length > 0) {
+              table.deleteRow(0);
+            }
+            let row;
+            const womanData = [];
+            for (const data of datas) {
+              if (data.gender === "F" && data.clubName === selectedAreasInit) {
+                womanData.push(data);
+              }
+            }
+
+            for (let i = 0; i < womanData.length; i++) {
+              if (i % 4 == 0) {
+                row = table.insertRow();
+                row.classList.add("tr"); // 클래스 추가
+              }
+              const cell1 = row.insertCell(i % 4);
+              cell1.innerHTML = `<figcaption>${womanData[i].name}</figcaption>
+      <div class="button-wrapper" style="margin-top: 10px">
+        <button
+          type="button"
+          role="button"
+          onclick="attendanceChkBtn(this)"
+          class=${
+            womanData[i].currentStatus === "IN"
+              ? "'ripple-button dark-mode'"
+              : "ripple-button"
+          }
+          data-name="${womanData[i].name}"
+          value="${womanData[i].identity}">
+          ${womanData[i].currentStatus === "OUT" ? "출석체크" : "체크해제"}
+        </button>
+        <button
+            style="margin-top:10px;"
+            type="button"
+            role="button"
+            onclick="delPerson(this)"
+            class=ripple-button
+            data-name="${womanData[i].name}"
+            value="${womanData[i].identity}">
+            회원삭제
+          </button>
+      </div>`;
+              cell1.classList.add("td"); // 클래스 추가
+            }
+            createClubNameListBtn(data);
+          },
+          fail: (e) => {
+            console.log("data is fail");
+          },
+        });
+      };
+      const fullListFunc = () => {
+        $.ajax({
+          url: "/getAllPersons",
+          type: "POST",
+          contentType: "application/json;charset=UTF-8",
+          dataType: "json",
+          success: (data) => {
+            clickFunc = "full";
+            allData = data;
+            const datas = data.sort((a, b) => a.name.localeCompare(b.name));
+            while (table.rows.length > 0) {
+              table.deleteRow(0);
+            }
+            let row;
+            const fullPersonList = [];
+            for (const item of datas) {
+              if (item.clubName === selectedAreasInit) {
+                fullPersonList.push(item);
+              }
+            }
+            for (let i = 0; i < fullPersonList.length; i++) {
+              if (i % 4 == 0) {
+                row = table.insertRow();
+                row.classList.add("tr"); // 클래스 추가
+              }
+              const cell1 = row.insertCell(i % 4);
+              cell1.innerHTML = `<figcaption>${
+                fullPersonList[i].name
+              }</figcaption>
+        <div class="button-wrapper" style="margin-top: 10px">
+          <button
+            type="button"
+            role="button"
+            onclick="attendanceChkBtn(this)"
+            class=${
+              fullPersonList[i].currentStatus === "IN"
+                ? "'ripple-button dark-mode'"
+                : "ripple-button"
+            }
+            data-name="${fullPersonList[i].name}"
+            value="${fullPersonList[i].identity}">
+            ${
+              fullPersonList[i].currentStatus === "OUT"
+                ? "출석체크"
+                : "체크해제"
+            }
+          </button>
+          <button
+            style="margin-top:10px;"
+            type="button"
+            role="button"
+            onclick="delPerson(this)"
+            class=ripple-button
+            data-name="${fullPersonList[i].name}"
+            value="${fullPersonList[i].identity}">
+            회원삭제
+          </button>
+        </div>`;
+              cell1.classList.add("td"); // 클래스 추가
+            }
+            createClubNameListBtn(data);
+          },
+          fail: (e) => {
+            console.log("data is fail");
+          },
+        });
+      };
+
+      const createClubNameListBtn = (data) => {
+        const clubNameContainer = document.getElementById("clubNameList");
+        while (clubNameContainer.firstChild) {
+          clubNameContainer.removeChild(clubNameContainer.firstChild);
+        }
+        let clubName = [...new Set(data.flatMap((v) => v.clubName))];
+        const targetItem = "양오클럽";
+        clubName = clubName
+          .filter((x) => x === targetItem)
+          .concat(clubName.filter((x) => x !== targetItem))
+          .reverse();
+        for (let a = 0; a < clubName.length; a++) {
+          const btn = document.createElement("button");
+          btn.value = clubName[a];
+          btn.setAttribute("role", "button");
+          btn.textContent = clubName[a];
+          btn.className = "areasBtn";
+          btn.addEventListener("click", function () {
+            selectedSpecificAreas(clubName[a]);
+          });
+          if (clubName[a] === targetItem) {
+            clubNameContainer.insertBefore(btn, clubNameContainer.firstChild);
+          } else {
+            clubNameContainer.insertBefore(
+              btn,
+              clubNameContainer.lastElementChild
+            );
+          }
+        }
+      };
+
+      const selectedSpecificAreas = (clubName) => {
+        selectedAreasInit = clubName;
+        allData.sort((a, b) => a.name.localeCompare(b.name));
+        while (table.rows.length > 0) {
+          table.deleteRow(0);
+        }
+        let row;
+        const spcificAreaMembers = [];
+        for (const data of allData) {
+          if (data.clubName === clubName) {
+            spcificAreaMembers.push(data);
+          }
+        }
+        for (let i = 0; i < spcificAreaMembers.length; i++) {
+          if (i % 4 == 0) {
+            row = table.insertRow();
+            row.classList.add("tr"); // 클래스 추가
+          }
+          const cell1 = row.insertCell(i % 4);
+          cell1.innerHTML = `<figcaption>${
+            spcificAreaMembers[i].name
+          }</figcaption>
+      <div class="button-wrapper" style="margin-top: 10px">
+        <button
+          type="button"
+          role="button"
+          onclick="attendanceChkBtn(this)"
+          class=${
+            spcificAreaMembers[i].currentStatus === "IN"
+              ? "'ripple-button dark-mode'"
+              : "ripple-button"
+          }
+          data-name="${spcificAreaMembers[i].name}"
+          value="${spcificAreaMembers[i].identity}">
+          ${
+            spcificAreaMembers[i].currentStatus === "OUT"
+              ? "출석체크"
+              : "체크해제"
+          }
+        </button>
+        <button
+            style="margin-top:10px;"
+            type="button"
+            role="button"
+            onclick="delPerson(this)"
+            class=ripple-button
+            data-name="${spcificAreaMembers[i].name}"
+            value="${spcificAreaMembers[i].identity}">
+            회원삭제
+          </button>
+      </div>`;
+          cell1.classList.add("td"); // 클래스 추가
+        }
+      };
+
+      const findPerson = (e) => {
+        const search = document.getElementById("searchInput");
+        const findName = search.value;
+        if (findName !== "") {
+          while (table.rows.length > 0) {
+            table.deleteRow(0);
+          }
+          for (const { name, currentStatus, identity } of allData) {
+            if (name === findName) {
+              const row = table.insertRow();
+              const cell = row.insertCell(0);
+              cell.innerHTML = `<figcaption>${findName}</figcaption>
+      <div class="button-wrapper" style="margin-top: 10px; ">
+        <button
+          type="button"
+          role="button"
+          onclick="attendanceChkBtn(this)"
+          class=${
+            currentStatus === "IN"
+              ? "'ripple-button dark-mode'"
+              : "ripple-button"
+          }
+          value="${identity}"
+        >
+        ${currentStatus === "OUT" ? "출석체크" : "체크해제"}
+        </button>
+        <button
+            style="margin-top:10px;"
+            type="button"
+            role="button"
+            onclick="delPerson(this)"
+            class=ripple-button
+            value="${identity}">
+            회원삭제
+          </button>
+      </div>`;
+              return;
+            }
+          }
+        }
+      };
+
+      const deletePerson = (e) => {
+        const data = {
+          identity: `${e.value}`,
+        };
+        $.ajax({
+          url: "/deletePerson",
+          type: "POST",
+          contentType: "application/json;charset=UTF-8",
+          data: JSON.stringify(data),
+          dataType: "json",
+          success: (data) => {
+            if (data) {
+              if (clickFunc === "full") {
+                fullListFunc();
+              } else if (clickFunc === "man") {
+                manListFunc();
+              } else if (clickFunc === "woman") {
+                womanListFunc();
+              }
+              window.Bridge.showToast("삭제되었습니다.");
+            } else {
+              window.Bridge.showToast("통신이 원할하지 않습니다.");
+            }
+            closeDeleteMemberModal();
+          },
+          fail: (e) => {
+            console.log("data is fail");
+          },
+        });
+      };
+      const delPerson = (e) => {
+        const deleteMemberOkBtn = document.getElementById("deleteMemberOkBtn");
+        deleteMemberOkBtn.value = `${e.value}`;
+        const modal = document.getElementById("popup");
+        modal.classList.add("active");
+      };
+
+      const closeDeleteMemberModal = () => {
+        const modal = document.getElementById("popup");
+        modal.classList.remove("active");
+      };
+      const attendanceChkBtn = (e) => {
+        const data = {
+          identity: `${e.value}`,
+        };
+        $.ajax({
+          url: "/attendanceChk",
+          type: "POST",
+          contentType: "application/json;charset=UTF-8",
+          data: JSON.stringify(data),
+          dataType: "json",
+          success: (data) => {
+            if (data.currentStatus === "OUT") {
+              e.classList.remove("dark-mode");
+              e.textContent = "체크완료";
+              window.Bridge.showToast("체크 해제");
+            } else {
+              e.classList.add("dark-mode");
+              e.textContent = "체크해제";
+              window.Bridge.showToast("체크 완료");
+            }
+
+            const index = allData.findIndex(
+              (v) => v.identity === data.identity
+            );
+
+            allData[index] = data;
+          },
+          fail: (e) => {
+            console.log("data is fail");
+          },
+        });
+      };
+
+      const closeModal = (e) => {
+        attendanceModal.style.display = "none";
+        selectedAreasInit = "양오클럽";
+      };
+
+      /* ]]> */
+    </script>
+  </div>
+</html>

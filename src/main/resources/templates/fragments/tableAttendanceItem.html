@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <div th:fragment="tableItem(count)">
+    <figcaption th:text="${datas[iterStat.count-count].name}"></figcaption>
+    <div class="button-wrapper" style="margin-top: 10px">
+      <button
+        type="button"
+        role="button"
+        onclick="attendanceChkBtn(this)"
+        th:class="${#strings.equals(datas[iterStat.count-count].currentStatus, 'IN') ? 'ripple-button dark-mode' : 'ripple-button'}"
+        th:value="${datas[iterStat.count-count].identity}"
+        th:text="${#strings.equals(datas[iterStat.count-count].currentStatus, 'IN') ? '체크완료' : '체크해제'}"
+      ></button>
+    </div>
+  </div>
+</html>

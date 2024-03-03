@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <div th:fragment="voiceSearchBtn">
+    <head>
+      <link th:href="@{/css/main/voiceSearchBtn.css}" rel="stylesheet" />
+    </head>
+    <button id="voiceBtn" class="voiceSearchBtn">
+      <img
+        style="width: 50px; height: 50px"
+        th:src="@{/images/voice.png}"
+        alt="대체 텍스트"
+      />
+    </button>
+  </div>
+</html>

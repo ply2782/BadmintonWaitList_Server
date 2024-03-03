@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <div th:fragment="deleteWaitListModal">
+    <head>
+      <link th:href="@{/css/main/deleteModal.css}" rel="stylesheet" />
+      <link th:href="@{/css/main/trash.css}" rel="stylesheet" />
+    </head>
+    <div id="modal-container">
+      <div class="modal-background">
+        <div class="modal">
+          <div
+            class="close-area"
+            id="closeDeleteModal"
+            style="
+              z-index: 2;
+              position: absolute;
+              top: 20px;
+              right: 20px;
+              font-size: xx-large;
+              font-weight: bold;
+            "
+          >
+            X
+          </div>
+          <h2>삭제</h2>
+          <p>대기자 명단에서 삭제하시겠습니까?</p>
+          <!-- 삭제 애니메이션 아이콘 -->
+          <div id="app-cover">
+            <input type="checkbox" id="deleteCheckbox" />
+            <div id="bin-icon">
+              <div id="lid"></div>
+              <div id="box">
+                <div id="box-inner">
+                  <div id="bin-lines"></div>
+                </div>
+              </div>
+            </div>
+            <div id="layer"></div>
+          </div>
+          <!-- 삭제 애니메이션 아이콘 -->
+          <svg
+            class="modal-svg"
+            xmlns="http://www.w3.org/2000/svg"
+            width="100%"
+            height="100%"
+            preserveAspectRatio="none"
+          >
+            <rect
+              x="0"
+              y="0"
+              fill="none"
+              width="226"
+              height="162"
+              rx="3"
+              ry="3"
+            ></rect>
+          </svg>
+        </div>
+      </div>
+    </div>
+    <script
+      type="text/javascript"
+      th:src="@{/js/main/deleteWaitList.js}"
+    ></script>
+    <script
+      type="text/javascript"
+      th:src="@{/js/main/waitListDeleteModal.js}"
+    ></script>
+  </div>
+</html>
