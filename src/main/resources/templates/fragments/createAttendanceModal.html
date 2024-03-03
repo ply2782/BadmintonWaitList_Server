@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <div th:fragment="createAttendanceModal">
+    <head>
+      <link th:href="@{/css/main/memberListModal.css}" rel="stylesheet" />
+    </head>
+    <div id="modal" class="modal-overlay">
+      <div class="modal-window">
+        <div class="title">
+          <h2>MemberList</h2>
+        </div>
+        <div class="content">
+          <!-- 대기자 이름 리스트 -->
+          <div
+            id="addWaitListWholeContainer"
+            class="addWaitListWholeContainer horizontal-friends-list"
+          ></div>
+          <!-- 대기자 확정 명단 -->
+          <div
+            style="
+              justify-content: space-between;
+              display: flex;
+              padding: 0 20px 0 20px;
+            "
+          >
+            <div style="display: flex; align-items: flex-start">
+              <button class="button-85" role="button" id="firstWaitList">
+                미정
+              </button>
+              <button class="button-85" role="button" id="secondWaitList">
+                미정
+              </button>
+              <button class="button-85" role="button" id="thirdWaitList">
+                미정
+              </button>
+              <button class="button-85" role="button" id="fourthWaitList">
+                미정
+              </button>
+            </div>
+            <button class="button-85" role="button" id="confirmBtn">
+              확정
+            </button>
+          </div>
+          <!--  -->
+        </div>
+      </div>
+    </div>
+    <script
+      type="text/javascript"
+      th:src="@{/js/main/addWaitListModal.js}"
+    ></script>
+  </div>
+</html>

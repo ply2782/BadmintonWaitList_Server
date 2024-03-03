@@ -1,0 +1,72 @@
+.button-container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.button-wrapper {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
+}
+.ripple-button {
+  position: relative;
+  width: 120px;
+  height: 60px;
+  background: #f5f5f5;
+  box-shadow: inset 4px 4px 14px rgba(0, 0, 0, 0.25),
+    inset -4px -4px 14px rgba(255, 255, 255, 0.25);
+  border-radius: 20px;
+  border: none;
+  font-weight: bold;
+  font-size: 20px;
+  line-height: 23px;
+  color: #000;
+  overflow: hidden;
+}
+.ripple-button:focus {
+  outline: 0;
+}
+.ripple-button:active {
+  transform: scale(0.95);
+}
+.ripple-button.dark-mode {
+  background: #292929;
+  box-shadow: inset 4px 4px 10px #000000,
+    inset -4px -4px 10px rgba(255, 255, 255, 0.4);
+  color: #f5f5f5;
+}
+.click-ripple {
+  position: absolute;
+  background: #23b4f2;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  border-radius: 50%;
+  animation: animate 1s linear 1;
+  overflow: hidden;
+}
+
+@keyframes animate {
+  0% {
+    width: 0px;
+    height: 0px;
+    opacity: 0.5;
+    overflow: hidden;
+  }
+  50% {
+    width: 500px;
+    height: 500px;
+    opacity: 0.3;
+    overflow: hidden;
+  }
+  100% {
+    width: 500px;
+    height: 500px;
+    opacity: 0;
+    overflow: hidden;
+  }
+}

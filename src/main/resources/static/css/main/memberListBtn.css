@@ -1,0 +1,46 @@
+.button-30:disabled {
+  opacity: 0.5; /* 예: 투명도를 낮춤 */
+  cursor: not-allowed; /* 마우스 커서를 바꿈 */
+}
+.button-30 {
+  align-items: center;
+  background-color: #fcfcfd;
+  border-radius: 100px;
+  border-width: 0;
+  box-shadow: rgba(45, 35, 66, 0.4) 0 2px 4px,
+    rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #d6d6e7 0 -3px 0 inset;
+  box-sizing: border-box;
+  color: #36395a;
+  display: inline-flex;
+  /* height: 48px; */
+  width: 120px;
+  justify-content: center;
+  line-height: 1;
+  padding: 30px;
+  overflow: hidden;
+  position: relative;
+  /* list-style: none; */
+  /* text-align: left; */
+  /* text-decoration: none; */
+  margin: 0px 0px 20px 20px;
+  transition: box-shadow 0.15s, transform 0.15s;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  white-space: nowrap;
+  will-change: box-shadow, transform;
+  font-size: x-large;
+}
+.button-30:focus {
+  box-shadow: #d6d6e7 0 0 0 1.5px inset, rgba(45, 35, 66, 0.4) 0 2px 4px,
+    rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #d6d6e7 0 -3px 0 inset;
+}
+.button-30:hover {
+  box-shadow: rgba(45, 35, 66, 0.4) 0 4px 8px,
+    rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #d6d6e7 0 -3px 0 inset;
+  transform: translateY(-2px);
+}
+.button-30:active {
+  box-shadow: #d6d6e7 0 3px 7px inset;
+  transform: translateY(2px);
+}

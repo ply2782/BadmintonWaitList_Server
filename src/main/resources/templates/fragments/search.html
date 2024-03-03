@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <div th:fragment="searchBar">
+    <head>
+      <link th:href="@{/css/main/search.css}" rel="stylesheet" />
+    </head>
+    <div class="search-box">
+      <button
+        role="button"
+        onclick="findPerson(this)"
+        id="searchBtn"
+        class="btn-search"
+      >
+        <i class="fas fa-search"></i>
+      </button>
+      <input
+        type="text"
+        id="searchInput"
+        class="input-search"
+        placeholder="Type to Search..."
+      />
+    </div>
+  </div>
+</html>

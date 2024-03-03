@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <div th:fragment="attendanceGraph">
+    <head>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+      <script src="https://d3js.org/d3.v5.min.js"></script>
+      <link
+        th:href="@{/css/main/attendanceStatus_Modal.css}"
+        rel="stylesheet"
+      />
+    </head>
+    <div id="graphModal" class="modal-overlay">
+      <div class="modal-window">
+        <div class="title">
+          <h2>출석률 근황</h2>
+          <button
+            onclick="closeGraphModal(this)"
+            class="close-area"
+            id="closeAttendanceModal"
+          >
+            X
+          </button>
+        </div>
+        <div
+          class="content"
+          style="overflow: scroll; height: 90%; max-width: 100%"
+        >
+          <canvas id="attendanceChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <script th:inline="javascript">
+      /*<![CDATA[*/
+      let chart;
+      const closeGraphModal = (e) => {
+        document.getElementById("graphModal").style.display = "none";
+        chart.destroy();
+      };
+      const attendanceStatus = document.getElementById("attendanceStatus");
+      attendanceStatus.addEventListener("click", () => {
+        const graphModal = document.getElementById("graphModal");
+        graphModal.style.display = "flex";
+        $.ajax({
+          url: "/calculatedAttendanceList",
+          type: "POST",
+          contentType: "application/json;charset=UTF-8",
+          dataType: "json",
+          success: (data) => {
+            const dataMap = new Map(Object.entries(data));
+            const sortedEntries = [...dataMap.entries()].sort(
+              (entry1, entry2) => {
+                const count1 = entry1[1].dateCtn;
+                const count2 = entry2[1].dateCtn;
+                return count2 - count1;
+              }
+            );
+            const top10Entries = sortedEntries.slice(0, 10);
+            const sortedMap = new Map(top10Entries);
+            const valuesCnt = [];
+            const valuesName = [];
+            for (const obj of sortedMap.values()) {
+              const cnt = obj["dateCtn"];
+              const name = obj["name"];
+              valuesName.push(name);
+              valuesCnt.push(cnt);
+            }
+            const ctx = document
+              .getElementById("attendanceChart")
+              .getContext("2d");
+            chart = new Chart(ctx, {
+              type: "bar",
+              data: {
+                labels: valuesName,
+                datasets: [
+                  {
+                    label: "출석률 현황 <상위 10명>",
+                    backgroundColor: [
+                      "rgba(255, 99, 132, 0.9)",
+                      "rgba(255, 159, 64, 0.9)",
+                      "rgba(255, 205, 86, 0.9)",
+                      "rgba(75, 192, 192, 0.9)",
+                      "rgba(54, 162, 235, 0.9)",
+                      "rgba(153, 102, 255, 0.9)",
+                      "rgba(201, 203, 207, 0.9)",
+                      "rgba(154, 62, 35, 0.9)",
+                      "rgba(53, 102, 255, 0.9)",
+                      "rgba(101, 220, 25, 0.9)",
+                    ],
+                    borderColor: [
+                      "rgb(255, 99, 132)",
+                      "rgb(255, 159, 64)",
+                      "rgb(255, 205, 86)",
+                      "rgb(75, 192, 192)",
+                      "rgb(54, 162, 235)",
+                      "rgb(153, 102, 255)",
+                      "rgb(201, 203, 207)",
+                      "rgba(154, 62, 35, 1)",
+                      "rgba(53, 102, 255, 1)",
+                      "rgba(101, 220, 25, 1)",
+                    ],
+                    borderWidth: 1,
+                    data: valuesCnt,
+                  },
+                ],
+              },
+              options: {
+                scales: {
+                  yAxes: [
+                    {
+                      ticks: {
+                        beginAtZero: true,
+                        max: Math.max(...valuesCnt),
+                        min: 0,
+                        fontColor: "rgba(255, 255, 255, 1)",
+                        fontSize: 14,
+                      },
+
+                      gridLines: {
+                        color: "rgba(255,255,255, 0.2)",
+                        lineWidth: 1,
+                      },
+                    },
+                  ],
+                  xAxes: [
+                    {
+                      ticks: {
+                        fontColor: "rgba(255, 255, 255, 1)",
+                        fontSize: 15,
+                      },
+                      gridLines: {
+                        color: "rgba(255,255,255, 0.2)",
+                        lineWidth: 1,
+                      },
+                    },
+                  ],
+                },
+                legend: {
+                  display: true,
+                  labels: {
+                    fontSize: 20,
+                    fontColor: "white",
+                  },
+                },
+                plugins: {},
+              },
+            });
+          },
+          error: (e) => {
+            console.log("data is fail");
+          },
+        });
+      });
+
+      /* ]]> */
+    </script>
+  </div>
+</html>

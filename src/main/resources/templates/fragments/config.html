@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <th:block th:fragment="commonCss">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <link th:href="@{/css/main/memberListBtn.css}" rel="stylesheet" />
+    <link th:href="@{/css/main/waitList.css}" rel="stylesheet" />
+    <link th:href="@{/css/main/waitListBtn.css}" rel="stylesheet" />
+    <link th:href="@{/css/main/changeIndexInput.css}" rel="stylesheet" />
+    <link th:href="@{/css/main/changeCheckBox.css}" rel="stylesheet" />
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"> -->
+    <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script> -->
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+  </th:block>
+
+  <th:block th:fragment="commonJs">
+    <!--  -->
+    <script type="text/javascript" th:src="@{/js/main/variables.js}"></script>
+    <script type="text/javascript" th:src="@{/js/main/hideUrl.js}"></script>
+    <script
+      type="text/javascript"
+      th:src="@{/js/main/createNameList.js}"
+    ></script>
+    <script
+      type="text/javascript"
+      th:src="@{/js/main/createWaitList.js}"
+    ></script>
+    <script
+      type="text/javascript"
+      th:src="@{/js/main/removeConfirmMembers.js}"
+    ></script>
+    <script type="text/javascript" th:src="@{/js/main/changeIndex.js}"></script>
+    <script type="text/javascript" th:src="@{/js/main/deleteAll.js}"></script>
+    <!--  -->
+  </th:block>
+</html>
