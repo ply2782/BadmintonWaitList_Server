@@ -33,7 +33,8 @@ public class PersonList implements Serializable {
         RED("RED"),
         ORANGE("ORANGE"),
         YELLOW("YELLOW"),
-        BLACK("BLACK");
+        BLACK("BLACK"),
+        WHITE("WHITE");
 
         private final String label;
 

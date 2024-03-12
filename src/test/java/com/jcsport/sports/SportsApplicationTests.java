@@ -38,7 +38,12 @@ class SportsApplicationTests {
 	@Test
 	@DisplayName("Test")
 	void listTest() {
+		String question = "ihrhbakrfpndopljhygc";
+		int m = 4, s = 2;
+		String str = question.substring(0, m);
+		String str2 = question.substring(m, m * 2);
 
+		logger.info("str : {}", str);
 	}
 
 	@Test
