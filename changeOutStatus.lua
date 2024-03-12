@@ -15,6 +15,7 @@ for _, field in ipairs(fields) do
     if data then
         local decoded = cjson.decode(data)  -- JSON 데이터 디코딩
         decoded.currentStatus = 'OUT'  -- currentStatus 값을 'OUT'으로 업데이트
+        decoded.color = 'WHITE'
         local updatedData = cjson.encode(decoded)  -- 업데이트된 데이터 인코딩
         redis.call('HSET', key, field, updatedData)  -- 업데이트된 데이터 저장
     end
